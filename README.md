@@ -59,8 +59,8 @@ RAGAS (ragas_evaluator.py): faithfulness + answer relevancy → Streamlit sideba
 
 **Windows (PowerShell)**
 ```powershell
-git clone <repo-url>
-cd <repo-folder>
+git clone https://github.com/Michael-Hagmans/nasa-mission-rag-chat.git
+cd nasa-mission-rag-chat
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 ```
@@ -68,8 +68,8 @@ If activation fails with *"running scripts is disabled"*, run `Set-ExecutionPoli
 
 **macOS / Linux**
 ```bash
-git clone <repo-url>
-cd <repo-folder>
+git clone https://github.com/Michael-Hagmans/nasa-mission-rag-chat.git
+cd nasa-mission-rag-chat
 python3 -m venv .venv
 source .venv/bin/activate
 ```
