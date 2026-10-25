@@ -1,0 +1,35 @@
+# --- Data and generated artifacts ---
+# Source mission text files
+data_text/
+# ChromaDB vector stores (rebuild with embedding_pipeline.py)
+chroma_db*/
+# Pipeline logs
+*.log
+
+# --- Secrets ---
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# --- Python ---
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# --- Editors and OS ---
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
