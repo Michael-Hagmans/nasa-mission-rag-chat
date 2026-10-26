@@ -2,4 +2,19 @@
 {"question": "What was the overall goal of Apollo 11?", "answer": "The goal as to land on the moon."}
 {"question": "Was Apollo 13 sucessful?", "answer": "No, technical issues occured."}
 {"question": "When did the Challenger accident happen?", "answer": "It happened in January 1986."}
-{"question": "How many people were on the Challenger?", "reference": "Seven people joined the mission."}
+{"question": "How many people were on the Challenger?", "answer": "Seven people joined the mission."}
+{"question": "Where did the Apollo 11 lunar module land?", "answer": "It landed in the Sea of Tranquility."}
+{"question": "What were the call signs of the Apollo 11 command module and lunar module?", "answer": "The command module was called Columbia and the lunar module was called Eagle."}
+{"question": "Which Apollo 11 astronaut stayed in lunar orbit during the landing, and what was his role?", "answer": "Michael Collins, the Command Module Pilot, stayed in orbit aboard Columbia."}
+{"question": "Who were the Apollo 13 crew members?", "answer": "James Lovell, John Swigert and Fred Haise."}
+{"question": "What were the call signs of the Apollo 13 spacecraft?", "answer": "Odyssey for the command and service module and Aquarius for the lunar module."}
+{"question": "Which component failed during the Apollo 13 mission?", "answer": "Oxygen tank 2 in the service module failed, causing a loss of oxygen and electrical power."}
+{"question": "How did the Apollo 13 crew survive after the oxygen tank failure?", "answer": "They powered down the command module Odyssey and used the lunar module Aquarius as a lifeboat for the return to Earth."}
+{"question": "Why did the Apollo 13 crew have to change lithium hydroxide canisters?", "answer": "The lithium hydroxide canisters remove carbon dioxide from the cabin air, and they had to be replaced to keep carbon dioxide at a safe level."}
+{"question": "Did Apollo 13 land on the Moon?", "answer": "No. The lunar landing was abandoned after the oxygen tank failure and the crew returned to Earth."}
+{"question": "Who was the commander of Challenger mission 51-L?", "answer": "Francis Richard (Dick) Scobee."}
+{"question": "Who were the seven crew members of Challenger mission 51-L?", "answer": "Commander Dick Scobee, pilot Michael Smith, mission specialists Judith Resnik, Ellison Onizuka and Ronald McNair, payload specialist Gregory Jarvis and teacher Christa McAuliffe."}
+{"question": "Why was Christa McAuliffe's participation in mission 51-L special?", "answer": "She was the teacher in space participant and the first private citizen to fly aboard the Space Shuttle."}
+{"question": "What was the primary objective of mission 51-L?", "answer": "To deploy a Tracking and Data Relay Satellite and to fly the Spartan Halley spacecraft to observe Halley's Comet."}
+{"question": "Which flight number was mission 51-L for the orbiter Challenger and for the Space Transportation System?", "answer": "It was the 10th flight of Challenger and the 25th Space Transportation System launch."}
+{"question": "What did the 'go at throttle up' call during the Challenger launch mean?", "answer": "After the main engines were throttled down to about 66 percent, they were throttled back up to 104 percent; the call confirmed this event had completed satisfactorily."}
