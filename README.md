@@ -6,6 +6,8 @@ I built it to test how well a standard RAG stack copes with noisy, OCR-extracted
 
 **Stack:** OpenAI (`text-embedding-3-small`, `gpt-4o`) · ChromaDB · RAGAS · Streamlit · Python 3.13
 
+![Streamlit chat app answering a question about the Apollo 11 crew, with collection, model, retrieval and evaluation settings in the sidebar](streamlit_app_nasa.png)
+
 ## Features
 
 - **Embedding pipeline:** token-based chunking with overlap, batched OpenAI embeddings, stable chunk IDs and incremental updates (`skip` / `update` / `replace`)
@@ -167,7 +169,7 @@ Streamlit opens http://localhost:8501 in your browser. In the sidebar:
 
 1. **Select Document Collection:** pick `chroma_db_openai / nasa_space_missions_text (<n> chunks)`.
 2. **OpenAI API Key:** pre-filled from `.env`.
-3. **Documents to retrieve:** number of chunks passed to the model (default 5).
+3. **Documents to retrieve:** number of chunks passed to the model (default 8).
 4. **Enable RAGAS Evaluation:** scores each answer; this adds a few seconds and extra API calls per question.
 
 Then ask a question, for example *"What happened to the oxygen tank on Apollo 13?"*
@@ -221,7 +223,7 @@ There is no automated test suite yet. Run these checks in order after setup; eac
 | Chat models offered in the UI | `config.py` → `CHAT_MODELS` | `["gpt-4o"]` |
 | Embedding model | `config.py` → `EMBEDDING_MODEL` | `text-embedding-3-small` |
 | Vector store path and collection name | `config.py` → `CHROMA_DIR`, `COLLECTION_NAME` | `./chroma_db_openai`, `nasa_space_missions_text` |
-| Chunks retrieved per question | `config.py` → `DEFAULT_N_RESULTS` (app slider, batch evaluation) | `5` |
+| Chunks retrieved per question | `config.py` → `DEFAULT_N_RESULTS` (app slider, batch evaluation) | `8` |
 | Characters per chunk sent to the model | `rag_client.py` → `MAX_CHUNK_CHARS` | `2500` (whole 500-token chunks) |
 
 If you change `EMBEDDING_MODEL`, rebuild the vector store with `--update-mode replace`; queries and stored chunks must use the same model.
