@@ -7,8 +7,9 @@ import chromadb
 
 import config
 
-# Characters of each retrieved chunk that are passed to the LLM
-MAX_CHUNK_CHARS = 1000
+# Characters of each retrieved chunk that are passed to the LLM. A 500-token chunk is
+# roughly 2,000 characters, so this keeps chunks whole and only caps unusually long ones.
+MAX_CHUNK_CHARS = 2500
 
 
 def discover_chroma_backends(base_dir: str = ".") -> Dict[str, Dict]:
@@ -57,7 +58,7 @@ def initialize_rag_system(chroma_dir: str, collection_name: str) -> Tuple[Option
         return None, False, str(e)
 
 
-def retrieve_documents(openai_api_key: str, collection, query: str, n_results: int = 3,
+def retrieve_documents(openai_api_key: str, collection, query: str, n_results: int = config.DEFAULT_N_RESULTS,
                        mission_filter: Optional[str] = None) -> Dict:
     """Embed the query with the ingestion model and return the closest chunks.
 

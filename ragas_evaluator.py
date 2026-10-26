@@ -1,9 +1,10 @@
 """Response quality scoring with RAGAS (faithfulness and answer relevancy).
 
 Run directly to score the whole pipeline on the test question set:
-    python ragas_evaluator.py [questions.jsonl]
+    python ragas_evaluator.py [questions.jsonl] [-n 5] [--max-chunk-chars 2500]
 """
 
+import argparse
 import json
 import math
 import os
@@ -61,7 +62,8 @@ def load_test_questions(path: Path) -> List[Dict]:
     return [json.loads(line) for line in lines if line.strip()]
 
 
-def batch_evaluation(openai_key: str, questions_path: Path, collection, n_results: int = 3) -> Dict[str, float]:
+def batch_evaluation(openai_key: str, questions_path: Path, collection,
+                     n_results: int = config.DEFAULT_N_RESULTS) -> Dict[str, float]:
     """Run each test question through retrieval and generation and average the RAGAS scores.
 
     NaN scores are left out of the averages.
@@ -86,11 +88,26 @@ def batch_evaluation(openai_key: str, questions_path: Path, collection, n_result
 
 
 if __name__ == "__main__":
-    questions_file = sys.argv[1] if len(sys.argv) > 1 else "test_questions.json"
+    parser = argparse.ArgumentParser(description="Score the RAG pipeline on a set of test questions")
+    parser.add_argument("questions_file", nargs="?", default="test_questions.json",
+                        help="JSON Lines file with one {\"question\": ...} object per line")
+    parser.add_argument("-n", "--n-results", type=int, default=config.DEFAULT_N_RESULTS,
+                        help="Chunks retrieved per question")
+    parser.add_argument("--max-chunk-chars", type=int, default=rag_client.MAX_CHUNK_CHARS,
+                        help="Characters of each chunk passed to the model")
+    args = parser.parse_args()
+
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        sys.exit("Set OPENAI_API_KEY first.")
+
     collection, ok, error = rag_client.initialize_rag_system(config.CHROMA_DIR, config.COLLECTION_NAME)
     if not ok:
         sys.exit(f"Could not open collection: {error}")
 
-    averages = batch_evaluation(os.environ["OPENAI_API_KEY"], Path(questions_file), collection)
+    rag_client.MAX_CHUNK_CHARS = args.max_chunk_chars
+    averages = batch_evaluation(api_key, Path(args.questions_file), collection, args.n_results)
+
+    print(f"n_results={args.n_results}  max_chunk_chars={args.max_chunk_chars}")
     for name, value in averages.items():
         print(f"{name}: {value:.3f}")

@@ -167,7 +167,7 @@ Streamlit opens http://localhost:8501 in your browser. In the sidebar:
 
 1. **Select Document Collection:** pick `chroma_db_openai / nasa_space_missions_text (<n> chunks)`.
 2. **OpenAI API Key:** pre-filled from `.env`.
-3. **Documents to retrieve:** number of chunks passed to the model (default 3).
+3. **Documents to retrieve:** number of chunks passed to the model (default 5).
 4. **Enable RAGAS Evaluation:** scores each answer; this adds a few seconds and extra API calls per question.
 
 Then ask a question, for example *"What happened to the oxygen tank on Apollo 13?"*
@@ -184,11 +184,15 @@ This prints each retrieved chunk with its similarity score, mission, source file
 ### 4. Run the batch evaluation
 
 ```bash
-python ragas_evaluator.py                      # uses test_questions.json
-python ragas_evaluator.py my_questions.jsonl   # or your own file
+python ragas_evaluator.py                          # test_questions.json, default settings
+python ragas_evaluator.py my_questions.jsonl       # your own question file
+python ragas_evaluator.py -n 8                     # retrieve 8 chunks per question
+python ragas_evaluator.py --max-chunk-chars 1000   # pass only the first 1,000 characters of each chunk
 ```
 
-Each question is run through retrieval and answer generation and then scored. The script prints the average faithfulness and answer relevancy. The question file has one JSON object per line:
+Each question is run through retrieval and answer generation and then scored. The script prints the settings used and the average faithfulness and answer relevancy. Use `-n` and `--max-chunk-chars` to compare retrieval settings on the same question set.
+
+The question file has one JSON object per line:
 
 ```json
 {"question": "What was the overall goal of Apollo 11?"}
@@ -217,21 +221,11 @@ There is no automated test suite yet. Run these checks in order after setup; eac
 | Chat models offered in the UI | `config.py` → `CHAT_MODELS` | `["gpt-4o"]` |
 | Embedding model | `config.py` → `EMBEDDING_MODEL` | `text-embedding-3-small` |
 | Vector store path and collection name | `config.py` → `CHROMA_DIR`, `COLLECTION_NAME` | `./chroma_db_openai`, `nasa_space_missions_text` |
-| Characters per chunk sent to the model | `rag_client.py` → `MAX_CHUNK_CHARS` | `1000` |
+| Chunks retrieved per question | `config.py` → `DEFAULT_N_RESULTS` (app slider, batch evaluation) | `5` |
+| Characters per chunk sent to the model | `rag_client.py` → `MAX_CHUNK_CHARS` | `2500` (whole 500-token chunks) |
 
 If you change `EMBEDDING_MODEL`, rebuild the vector store with `--update-mode replace`; queries and stored chunks must use the same model.
 
-## Findings
-
-<!-- Fill in after running `python ragas_evaluator.py` and testing a few questions. -->
-
-| Metric (test set) | Score |
-|---|---|
-| Faithfulness | x.xx |
-| Answer relevancy | x.xx |
-
-Observations:
-- …
 
 ## Troubleshooting
 
@@ -248,7 +242,6 @@ Observations:
 
 - **Source quality:** much of the text is OCR output with timestamps and fragments, which lowers retrieval precision.
 - **Chunking:** fixed-size token windows ignore sentence and speaker boundaries.
-- **Context truncation:** only the first 1,000 characters of each 500-token chunk reach the model.
 - **Mission filter:** supported by the retrieval layer but not yet exposed in the UI.
 - **Tests:** no automated unit or integration tests yet.
 

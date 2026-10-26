@@ -23,6 +23,9 @@ CHAT_MODELS = ["gpt-4o"]
 EVAL_MODEL = os.getenv("RAG_EVAL_MODEL", "gpt-4o")
 EMBEDDING_MODEL = "text-embedding-3-small"
 
+# Chunks retrieved per question (app default, batch evaluation, rag_client)
+DEFAULT_N_RESULTS = 5
+
 DATA_DIR = "data_text"
 CHROMA_DIR = "./chroma_db_openai"
 COLLECTION_NAME = "nasa_space_missions_text"

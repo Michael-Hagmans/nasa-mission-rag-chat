@@ -24,7 +24,7 @@ st.set_page_config(
 )
 
 
-def retrieve_documents(openai_api_key: str, collection, query: str, n_results: int = 3,
+def retrieve_documents(openai_api_key: str, collection, query: str, n_results: int = config.DEFAULT_N_RESULTS,
                        mission_filter: Optional[str] = None) -> Optional[Dict]:
     """Retrieve relevant chunks, showing an error in the UI instead of crashing"""
     try:
@@ -122,7 +122,7 @@ def main():
         )
 
         st.subheader("🔍 Retrieval Settings")
-        n_docs = st.slider("Documents to retrieve", 1, 10, 3)
+        n_docs = st.slider("Documents to retrieve", 1, 10, config.DEFAULT_N_RESULTS)
 
         st.subheader("📊 Evaluation Settings")
         enable_evaluation = st.checkbox("Enable RAGAS Evaluation", value=ragas_evaluator.RAGAS_AVAILABLE)
