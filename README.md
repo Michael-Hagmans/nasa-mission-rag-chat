@@ -226,6 +226,41 @@ There is no automated test suite yet. Run these checks in order after setup; eac
 
 If you change `EMBEDDING_MODEL`, rebuild the vector store with `--update-mode replace`; queries and stored chunks must use the same model.
 
+## Findings
+
+### Number of retrieved chunks: 3 vs 8
+
+Batch evaluation on the 20 questions in `test_questions.json`, with `gpt-4o` as both answer model and RAGAS judge and all other settings at their defaults:
+
+| Chunks retrieved (`-n`) | Faithfulness | Answer relevancy |
+|---|---|---|
+| 3 | 0.944 | 0.636 |
+| 8 | 0.968 | 0.697 |
+| Change | +0.024 | +0.061 |
+
+```bash
+python ragas_evaluator.py -n 3
+python ragas_evaluator.py -n 8
+```
+
+**Observations**
+
+- **Faithfulness is high in both setups.** The system prompt restricts the model to the retrieved documents, and it rarely adds unsupported claims. The small gain at `n=8` is consistent with more context giving the model more material to support each statement, but a difference of 0.024 on 20 questions amounts to one or two answers and is within run-to-run variation.
+- **Answer relevancy is the weaker metric and benefits more from extra chunks.** RAGAS scores relevancy by generating questions from the answer and comparing them with the original question. Answers such as "the documents do not contain this information", as well as hedged or overly detailed answers, score low. With 8 chunks the relevant passage is retrieved more often, so the model answers directly more often.
+- **Why more chunks help with this data:** most sources are OCR-extracted transcripts full of timestamps, call signs and fragments. The chunk that contains the answer is often not ranked first, so a larger `n` gives it a better chance of being included. Because chunks are short (about 500 tokens), 8 chunks are still a small prompt, so the extra context costs little.
+
+**Caveats**
+
+These results come from a single run per setting on a small question set, with the same model generating and judging the answers. They show a trend, not a reliable effect size.
+
+### Next steps to make the evaluation more reliable
+
+1. **Repeat runs:** run each setting 3–5 times and report mean and standard deviation; LLM-based metrics vary between runs.
+2. **More and broader questions:** extend the test set to 50+ questions with an even split across missions and question types (facts, causes, timelines), plus out-of-scope questions that the system should decline.
+3. **Per-question results:** save the score, retrieved chunks and answer for every question, so changes can be traced to specific questions instead of averages.
+4. **Evaluate retrieval separately:** use the reference answers in `test_questions.json` for reference-based RAGAS metrics (context precision and recall, answer correctness), and measure whether the relevant chunk appears in the top *k* results.
+5. **Independent judge:** use a different model for RAGAS than for answer generation to avoid a model grading its own output.
+6. **Fix the remaining variables:** set the answer temperature to 0 for evaluation runs, and compare intermediate values (`n=5`) and chunk sizes before settling on a default.
 
 ## Troubleshooting
 
